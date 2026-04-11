@@ -36,10 +36,6 @@ export async function getCreatorBySlug(slug) {
     }
   )
   const creator_tags = await tagsRes.json()
-
-  console.log('VIDEOS:', JSON.stringify(videos))
-  console.log('TAGS:', JSON.stringify(creator_tags))
-
   return { ...creator, videos, creator_tags }
 }
 
@@ -48,7 +44,7 @@ export async function getAllCreators() {
   const supabaseKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY
 
   const res = await fetch(
-    `${supabaseUrl}/rest/v1/creators?select=*,creator_tags(tags(name)),videos(id,title,youtube_url)`,
+    `${supabaseUrl}/rest/v1/creators?select=*,creator_tags(tags(name)),videos(id,title,youtube_url)&approved=eq.true`,
     {
       headers: {
         apikey: supabaseKey,
