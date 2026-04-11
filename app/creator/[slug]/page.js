@@ -1,4 +1,10 @@
+import VideoPlayer from '../../components/VideoPlayer'
 import { getCreatorBySlug } from '../../lib/supabase'
+
+function getYouTubeId(url) {
+  const match = url.match(/(?:youtu\.be\/|v=)([a-zA-Z0-9_-]{11})/)
+  return match ? match[1] : null
+}
 
 export default async function CreatorPage({ params }) {
   const { slug } = await params
@@ -12,7 +18,12 @@ export default async function CreatorPage({ params }) {
     )
   }
 
-  const tags = creator.creator_tags.map(ct => ct.tags.name)
+  const tags = creator.creator_tags?.map(ct => ct.tags?.name).filter(Boolean) || []
+  const videos = creator.videos || []
+  console.log('VIDEOS ON PAGE:', JSON.stringify(videos))
+videos.forEach(v => {
+  console.log('ID extracted:', getYouTubeId(v.youtube_url))
+})
 
   return (
     <main className="min-h-screen bg-zinc-950 text-white">
@@ -48,18 +59,10 @@ export default async function CreatorPage({ params }) {
         </div>
 
         <div className="border-t border-zinc-800 pt-6">
-          <h2 className="text-sm font-semibold text-zinc-400 uppercase tracking-wider mb-4">Videos</h2>
-          
-          <a href={creator["video_url"]}
-            target="_blank"
-            className="flex items-center justify-between p-4 bg-zinc-900 rounded-xl border border-zinc-800 hover:border-zinc-600 transition-colors"
-          >
-            <div>
-              <p className="font-medium text-white">Watch on YouTube</p>
-              <p className="text-zinc-500 text-sm mt-0.5">Opens in a new tab</p>
-            </div>
-            <span className="text-zinc-400 text-xl">→</span>
-          </a>
+          <h2 className="text-sm font-semibold text-zinc-400 uppercase tracking-wider mb-4">
+            Videos
+          </h2>
+          <VideoPlayer videos={videos} />
         </div>
 
       </div>
