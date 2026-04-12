@@ -1,46 +1,47 @@
-import { getAllCreators } from './lib/supabase'
+import { getAllVideos } from './lib/supabase'
 import Link from 'next/link'
 
+function getYouTubeId(url) {
+  const match = url.match(/(?:youtu\.be\/|v=)([a-zA-Z0-9_-]{11})/)
+  return match ? match[1] : null
+}
+
 export default async function Home() {
-  const creators = await getAllCreators()
+  const videos = await getAllVideos()
 
   return (
-    <main className="min-h-screen bg-zinc-950 text-white px-4 py-8 max-w-xl mx-auto">
+    <main className="min-h-screen bg-zinc-950 text-white pb-20">
 
-      <div className="mb-8">
-        <h1 className="text-3xl font-bold">unhinged</h1>
-        <p className="text-zinc-400 text-sm mt-1">real creators, no algorithm</p>
-      </div>
+      <div className="grid grid-cols-2 gap-0.5">
+        {videos.map(video => {
+          const id = getYouTubeId(video.youtube_url)
+          if (!id) return null
+          const thumbnail = `https://img.youtube.com/vi/${id}/mqdefault.jpg`
 
-      <div className="flex flex-col gap-4">
-        {creators.map(creator => (
-          <Link
-            key={creator.slug}
-            href={`/creator/${creator.slug}`}
-            className="block p-4 bg-zinc-900 rounded-xl border border-zinc-800 hover:border-zinc-600 transition-colors"
-          >
-            <div className="flex items-center gap-3 mb-2">
-              <div className="w-10 h-10 rounded-full bg-zinc-700 flex items-center justify-center font-bold text-sm flex-shrink-0">
-                {creator.name[0].toUpperCase()}
-              </div>
-              <div>
-                <p className="font-semibold">{creator.name}</p>
-                <p className="text-zinc-500 text-xs">/{creator.slug}</p>
+          return (
+            <div key={video.id} className="flex flex-col">
+              <Link href={`/watch/${video.id}`}>
+                <img
+                  src={thumbnail}
+                  alt={video.title}
+                  className="w-full aspect-video object-cover"
+                />
+              </Link>
+              <div className="px-2 py-2">
+                <Link href={`/watch/${video.id}`}>
+                  <p className="text-white text-sm font-medium leading-snug line-clamp-2">
+                    {video.title}
+                  </p>
+                </Link>
+                <Link href={`/creator/${video.creators?.slug}`}>
+                  <p className="text-zinc-500 text-xs mt-1">
+                    {video.creators?.name}
+                  </p>
+                </Link>
               </div>
             </div>
-            <p className="text-zinc-400 text-sm leading-relaxed">{creator.bio}</p>
-            <div className="flex flex-wrap gap-1 mt-3">
-              {creator.creator_tags.map(ct => (
-                <span
-                  key={ct.tags.name}
-                  className="px-2 py-0.5 bg-zinc-800 text-zinc-400 text-xs rounded-full"
-                >
-                  {ct.tags.name}
-                </span>
-              ))}
-            </div>
-          </Link>
-        ))}
+          )
+        })}
       </div>
 
     </main>
