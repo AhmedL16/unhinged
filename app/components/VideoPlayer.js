@@ -7,22 +7,31 @@ function getYouTubeId(url) {
 
 export default function VideoPlayer({ videos }) {
   return (
-    <div className="flex flex-col gap-6">
+    <div style={{display: 'flex', flexDirection: 'column', gap: '12px'}}>
       {videos.map(video => {
         const id = getYouTubeId(video.youtube_url)
         if (!id) return null
         return (
-          <div key={video.id}>
-            <div className="relative w-full" style={{ paddingTop: '56.25%' }}>
+          <div key={video.id} style={{
+            backgroundColor: '#141414',
+            borderRadius: '12px',
+            overflow: 'hidden',
+            border: '1px solid #1f1f1f'
+          }}>
+            <div style={{position: 'relative', paddingTop: '56.25%'}}>
               <iframe
                 src={`https://www.youtube.com/embed/${id}`}
                 title={video.title}
                 allowFullScreen
                 allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                className="absolute top-0 left-0 w-full h-full rounded-xl"
+                style={{position: 'absolute', top: 0, left: 0, width: '100%', height: '100%', border: 'none'}}
               />
             </div>
-            <p className="mt-2 text-sm font-medium text-zinc-300">{video.title}</p>
+            <div style={{padding: '10px 12px'}}>
+              <p style={{color: '#fff', fontSize: '13px', fontWeight: 500, margin: 0}}>
+                {video.title}
+              </p>
+            </div>
           </div>
         )
       })}

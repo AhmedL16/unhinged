@@ -1,10 +1,6 @@
-import VideoPlayer from '../../components/VideoPlayer'
 import { getCreatorBySlug } from '../../lib/supabase'
-
-function getYouTubeId(url) {
-  const match = url.match(/(?:youtu\.be\/|v=)([a-zA-Z0-9_-]{11})/)
-  return match ? match[1] : null
-}
+import VideoPlayer from '../../components/VideoPlayer'
+import Link from 'next/link'
 
 export default async function CreatorPage({ params }) {
   const { slug } = await params
@@ -12,56 +8,64 @@ export default async function CreatorPage({ params }) {
 
   if (!creator) {
     return (
-      <main className="min-h-screen bg-black text-white flex items-center justify-center">
-        <p className="text-zinc-500 text-sm">creator not found.</p>
+      <main style={{backgroundColor: '#0a0a0a', minHeight: '100vh', display: 'flex', alignItems: 'center', justifyContent: 'center'}}>
+        <p style={{color: '#666', fontSize: '14px'}}>creator not found.</p>
       </main>
     )
   }
 
   const tags = creator.creator_tags?.map(ct => ct.tags?.name).filter(Boolean) || []
   const videos = creator.videos || []
-  console.log('VIDEOS ON PAGE:', JSON.stringify(videos))
-videos.forEach(v => {
-  console.log('ID extracted:', getYouTubeId(v.youtube_url))
-})
 
   return (
-    <main className="min-h-screen bg-zinc-950 text-white">
+    <main style={{backgroundColor: '#0a0a0a', minHeight: '100vh', paddingBottom: '80px'}}>
 
-      <div className="h-32 bg-zinc-800 w-full" />
+      <div style={{height: '120px', backgroundColor: '#141414', borderBottom: '1px solid #1f1f1f'}} />
 
-      <div className="px-4 pb-12 max-w-xl mx-auto">
+      <div style={{padding: '0 16px', marginTop: '-40px'}}>
 
-        <div className="-mt-12 mb-4">
-          <div className="w-24 h-24 rounded-full bg-zinc-700 border-4 border-zinc-950 flex items-center justify-center text-3xl font-bold">
-            {creator.name[0].toUpperCase()}
-          </div>
+        <div style={{
+          width: '80px', height: '80px',
+          borderRadius: '50%',
+          backgroundColor: '#2a2a2a',
+          border: '3px solid #0a0a0a',
+          display: 'flex', alignItems: 'center', justifyContent: 'center',
+          fontSize: '28px', fontWeight: 700, color: '#fff',
+          marginBottom: '12px'
+        }}>
+          {creator.name[0].toUpperCase()}
         </div>
 
-        <div className="mb-4">
-          <h1 className="text-2xl font-bold">{creator.name}</h1>
-          <p className="text-zinc-400 text-sm mt-1">unhinged.com/creator/{creator.slug}</p>
-        </div>
+        <h1 style={{color: '#fff', fontSize: '22px', fontWeight: 700, margin: '0 0 4px'}}>
+          {creator.name}
+        </h1>
+        <p style={{color: '#666', fontSize: '13px', margin: '0 0 12px'}}>
+          unhinged.com/creator/{creator.slug}
+        </p>
 
-        <p className="text-zinc-300 text-base leading-relaxed mb-6">
+        <p style={{color: '#aaa', fontSize: '14px', lineHeight: 1.6, margin: '0 0 16px'}}>
           {creator.bio}
         </p>
 
-        <div className="flex flex-wrap gap-2 mb-8">
+        <div style={{display: 'flex', flexWrap: 'wrap', gap: '8px', marginBottom: '24px'}}>
           {tags.map(tag => (
-            <span
-              key={tag}
-              className="px-3 py-1 bg-zinc-800 text-zinc-300 text-xs rounded-full border border-zinc-700"
-            >
+            <span key={tag} style={{
+              padding: '4px 12px',
+              backgroundColor: '#1a1a1a',
+              border: '1px solid #2a2a2a',
+              borderRadius: '99px',
+              color: '#888',
+              fontSize: '12px'
+            }}>
               {tag}
             </span>
           ))}
         </div>
 
-        <div className="border-t border-zinc-800 pt-6">
-          <h2 className="text-sm font-semibold text-zinc-400 uppercase tracking-wider mb-4">
+        <div style={{borderTop: '1px solid #1f1f1f', paddingTop: '20px'}}>
+          <p style={{color: '#666', fontSize: '12px', fontWeight: 600, letterSpacing: '0.5px', textTransform: 'uppercase', margin: '0 0 16px'}}>
             Videos
-          </h2>
+          </p>
           <VideoPlayer videos={videos} />
         </div>
 
