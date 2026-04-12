@@ -1,17 +1,13 @@
+'use client'
+
 import Link from 'next/link'
 
 export default function Nav() {
   return (
-    <nav className="w-full px-4 py-4 flex items-center justify-between border-b border-zinc-800 bg-zinc-950">
-      <Link href="/" className="text-white font-bold text-lg tracking-tight">
+    <header className="w-full px-4 py-3 flex items-center border-b border-zinc-800 bg-zinc-950 sticky top-0 z-50">
+      <Link href="/" className="text-white font-bold text-xl tracking-tight">
         unhinged
       </Link>
-      <Link
-        href="/join"
-        className="px-4 py-1.5 bg-white text-black text-sm font-semibold rounded-full hover:bg-zinc-200 transition-colors"
-      >
-        join
-      </Link>
-    </nav>
+    </header>
   )
 }
