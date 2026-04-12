@@ -4,8 +4,18 @@ import Link from 'next/link'
 
 export default function Nav() {
   return (
-    <header className="w-full px-4 py-3 flex items-center border-b border-zinc-800 bg-zinc-950 sticky top-0 z-50">
-      <Link href="/" className="text-white font-bold text-xl tracking-tight">
+    <header style={{
+      width: '100%',
+      padding: '12px 16px',
+      display: 'flex',
+      alignItems: 'center',
+      borderBottom: '1px solid #1f1f1f',
+      backgroundColor: '#0a0a0a',
+      position: 'sticky',
+      top: 0,
+      zIndex: 50
+    }}>
+      <Link href="/" style={{color: '#fff', fontWeight: 700, fontSize: '20px', textDecoration: 'none', letterSpacing: '-0.5px'}}>
         unhinged
       </Link>
     </header>

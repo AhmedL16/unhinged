@@ -1,9 +1,9 @@
-import { Inter } from 'next/font/google'
+import { Outfit } from 'next/font/google'
 import './globals.css'
 import Nav from './components/nav'
 import BottomNav from './components/BottomNav'
 
-const inter = Inter({ subsets: ['latin'] })
+const OutfitFont = Outfit({ subsets: ['latin'] })
 
 export const metadata = {
   title: 'unhinged',
@@ -13,9 +13,9 @@ export const metadata = {
 export default function RootLayout({ children }) {
   return (
     <html lang="en">
-      <body className={inter.className + ' bg-zinc-950'}>
+      <body className={OutfitFont.className} style={{margin: 0, padding: 0, backgroundColor: '#0a0a0a', overflowX: 'hidden'}}>
         <Nav />
-        <div className="pb-20">
+        <div style={{paddingBottom: '80px'}}>
           {children}
         </div>
         <BottomNav />

@@ -90,3 +90,37 @@ export async function getVideoById(id) {
   const data = await res.json()
   return data[0] || null
 }
+export async function incrementViews(videoId) {
+  const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL
+  const supabaseKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY
+
+  await fetch(
+    `${supabaseUrl}/rest/v1/rpc/increment_views`,
+    {
+      method: 'POST',
+      headers: {
+        apikey: supabaseKey,
+        Authorization: `Bearer ${supabaseKey}`,
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({ video_id: videoId })
+    }
+  )
+}
+export async function getSimilarVideos(videoId, creatorId) {
+  const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL
+  const supabaseKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY
+
+  const res = await fetch(
+    `${supabaseUrl}/rest/v1/videos?id=neq.${videoId}&select=*,creators(name,slug)&order=views.desc&limit=6`,
+    {
+      headers: {
+        apikey: supabaseKey,
+        Authorization: `Bearer ${supabaseKey}`
+      }
+    }
+  )
+
+  const data = await res.json()
+  return Array.isArray(data) ? data : []
+}
