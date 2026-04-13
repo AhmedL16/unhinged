@@ -28,9 +28,9 @@ export default async function Home() {
   const videos = await getAllVideos()
 
   return (
-    <main style={{backgroundColor: '#0a0a0a', minHeight: '100vh', paddingBottom: '80px'}}>
+    <main style={{backgroundColor: '#0a0a0a', minHeight: '100vh', paddingBottom: '80px', maxWidth: '1200px', margin: '0 auto'}}>
 
-      <div style={{padding: '12px 12px 0'}}>
+      <div style={{padding: '12px 12px 0', display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(280px, 1fr))', gap: '16px'}}>
         {videos.map(video => {
           const id = getYouTubeId(video.youtube_url)
           if (!id) return null
@@ -40,7 +40,7 @@ export default async function Home() {
             <Link
               key={video.id}
               href={`/watch/${video.id}`}
-              style={{display: 'block', marginBottom: '20px', textDecoration: 'none'}}
+              style={{display: 'block', textDecoration: 'none'}}
             >
               <div style={{
                 backgroundColor: '#141414',
