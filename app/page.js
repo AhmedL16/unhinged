@@ -55,23 +55,30 @@ export default async function Home() {
                       {video.creators?.name?.[0]?.toUpperCase()}
                     </div>
                     <div>
-                      <p style={{
-                        color: '#ffffff',
-                        fontSize: '14px',
-                        fontWeight: 500,
-                        lineHeight: 1.3,
-                        margin: 0
-                      }}>
-                        {video.title}
-                      </p>
-                      <p style={{
-                        color: '#888',
-                        fontSize: '12px',
-                        margin: '2px 0 0'
-                      }}>
-                        {video.creators?.name}
-                      </p>
-                    </div>
+                  <p style={{
+                    color: '#ffffff',
+                    fontSize: '14px',
+                    fontWeight: 500,
+                    lineHeight: 1.3,
+                    margin: 0
+                  }}>
+                    {video.title}
+                  </p>
+                  <p style={{
+                    color: '#888',
+                    fontSize: '12px',
+                    margin: '2px 0 0'
+                  }}>
+                    {video.creators?.name}
+                  </p>
+                  <p style={{
+                    color: '#555',
+                    fontSize: '11px',
+                    margin: '2px 0 0'
+                  }}>
+                    {video.views} {video.views === 1 ? 'view' : 'views'}
+                  </p>
+                </div>
                   </div>
                 </div>
               </div>
