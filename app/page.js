@@ -5,6 +5,24 @@ function getYouTubeId(url) {
   const match = url.match(/(?:youtu\.be\/|v=)([a-zA-Z0-9_-]{11})/)
   return match ? match[1] : null
 }
+function getRelativeTime(dateStr) {
+  const now = new Date()
+  const date = new Date(dateStr)
+  const seconds = Math.floor((now - date) / 1000)
+  if (seconds < 60) return 'just now'
+  const minutes = Math.floor(seconds / 60)
+  if (minutes < 60) return `${minutes} minute${minutes === 1 ? '' : 's'} ago`
+  const hours = Math.floor(minutes / 60)
+  if (hours < 24) return `${hours} hour${hours === 1 ? '' : 's'} ago`
+  const days = Math.floor(hours / 24)
+  if (days < 7) return `${days} day${days === 1 ? '' : 's'} ago`
+  const weeks = Math.floor(days / 7)
+  if (weeks < 4) return `${weeks} week${weeks === 1 ? '' : 's'} ago`
+  const months = Math.floor(days / 30)
+  if (months < 12) return `${months} month${months === 1 ? '' : 's'} ago`
+  const years = Math.floor(days / 365)
+  return `${years} year${years === 1 ? '' : 's'} ago`
+}
 
 export default async function Home() {
   const videos = await getAllVideos()
@@ -41,6 +59,21 @@ export default async function Home() {
                       objectFit: 'cover'
                     }}
                   />
+                  {video.duration && (
+                    <span style={{
+                      position: 'absolute',
+                      bottom: '8px',
+                      right: '8px',
+                      backgroundColor: 'rgba(0,0,0,0.8)',
+                      color: '#fff',
+                      fontSize: '11px',
+                      fontWeight: 600,
+                      padding: '2px 6px',
+                      borderRadius: '4px'
+                    }}>
+                      {video.duration}
+                    </span>
+                  )}
                 </div>
                 <div style={{padding: '10px 12px 12px'}}>
                   <div style={{display: 'flex', alignItems: 'center', gap: '10px'}}>
@@ -76,7 +109,7 @@ export default async function Home() {
                     fontSize: '11px',
                     margin: '2px 0 0'
                   }}>
-                    {video.views} {video.views === 1 ? 'view' : 'views'}
+                    {video.views} {video.views === 1 ? 'view' : 'views'} · {getRelativeTime(video.created_at)}
                   </p>
                 </div>
                   </div>

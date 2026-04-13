@@ -9,7 +9,7 @@ export default function WatchPlayer({ youtubeId, title }) {
       backgroundColor: '#000'
     }}>
       <iframe
-        src={`https://www.youtube.com/embed/${youtubeId}?autoplay=1`}
+        src={`https://www.youtube.com/embed/${youtubeId}?autoplay=1&modestbranding=1&rel=0`}
         title={title}
         allowFullScreen
         allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"

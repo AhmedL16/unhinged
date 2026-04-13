@@ -20,7 +20,7 @@ export default function VideoPlayer({ videos }) {
           }}>
             <div style={{position: 'relative', paddingTop: '56.25%'}}>
               <iframe
-                src={`https://www.youtube.com/embed/${id}`}
+                src={`https://www.youtube.com/embed/${id}?modestbranding=1&rel=0`}
                 title={video.title}
                 allowFullScreen
                 allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"

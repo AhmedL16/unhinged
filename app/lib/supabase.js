@@ -124,3 +124,22 @@ export async function getSimilarVideos(videoId, creatorId) {
   const data = await res.json()
   return Array.isArray(data) ? data : []
 }
+export async function getYouTubeDuration(videoId) {
+  const apiKey = process.env.NEXT_PUBLIC_YOUTUBE_API_KEY
+  const res = await fetch(
+    `https://www.googleapis.com/youtube/v3/videos?id=${videoId}&part=contentDetails&key=${apiKey}`
+  )
+  const data = await res.json()
+  const duration = data.items?.[0]?.contentDetails?.duration
+  if (!duration) return null
+  return formatDuration(duration)
+}
+
+function formatDuration(iso) {
+  const match = iso.match(/PT(?:(\d+)H)?(?:(\d+)M)?(?:(\d+)S)?/)
+  const h = parseInt(match[1] || 0)
+  const m = parseInt(match[2] || 0)
+  const s = parseInt(match[3] || 0)
+  if (h > 0) return `${h}:${String(m).padStart(2, '0')}:${String(s).padStart(2, '0')}`
+  return `${m}:${String(s).padStart(2, '0')}`
+}
