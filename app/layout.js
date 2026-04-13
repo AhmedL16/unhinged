@@ -2,6 +2,7 @@ import { Outfit } from 'next/font/google'
 import './globals.css'
 import Nav from './components/nav'
 import BottomNav from './components/BottomNav'
+import { Analytics } from '@vercel/analytics/react'
 
 const OutfitFont = Outfit({ subsets: ['latin'] })
 
@@ -19,6 +20,7 @@ export default function RootLayout({ children }) {
           {children}
         </div>
         <BottomNav />
+        <Analytics />
       </body>
     </html>
   )
