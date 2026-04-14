@@ -1,6 +1,7 @@
 export const revalidate = 0
 import { getAllVideos } from './lib/supabase'
 import Link from 'next/link'
+import Thumbnail from '../components/Thumbnail'
 function dailyShuffle(array) {
   if (!array || array.length === 0) return [];
 
@@ -61,7 +62,7 @@ export default async function Home() {
         {videos.map(video => {
           const id = getYouTubeId(video.youtube_url)
           if (!id) return null
-          const thumbnail = `https://img.youtube.com/vi/${id}/hqdefault.jpg`
+          const thumbnail = `https://img.youtube.com/vi/${id}/maxresdefault.jpg`
 
           return (
             <Link
@@ -76,16 +77,7 @@ export default async function Home() {
                 border: '1px solid #1f1f1f'
               }}>
                 <div style={{position: 'relative', paddingTop: '56.25%'}}>
-                  <img
-                    src={thumbnail}
-                    alt={video.title}
-                    style={{
-                      position: 'absolute',
-                      top: 0, left: 0,
-                      width: '100%', height: '100%',
-                      objectFit: 'cover'
-                    }}
-                  />
+                  <Thumbnail videoId={id} title={video.title} />
                   {video.duration && (
                     <span style={{
                       position: 'absolute',
