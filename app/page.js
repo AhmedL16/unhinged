@@ -1,5 +1,31 @@
 import { getAllVideos } from './lib/supabase'
 import Link from 'next/link'
+function dailyShuffle(array) {
+  if (!array || array.length === 0) return [];
+
+  // 1. Create a seed based on today's date (e.g., "2026-04-14")
+  const seed = new Date().toISOString().split('T')[0];
+  
+  // 2. Create a simple hash from the string
+  let hash = 0;
+  for (let i = 0; i < seed.length; i++) {
+    hash = ((hash << 5) - hash) + seed.charCodeAt(i);
+    hash |= 0; 
+  }
+
+  // 3. Simple predictable shuffle
+  const shuffled = [...array];
+  for (let i = shuffled.length - 1; i > 0; i--) {
+    // Use the hash to create a pseudo-random index
+    const j = Math.abs((hash + i) % (i + 1));
+    [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]];
+    // Mutate hash slightly for the next iteration
+    hash = (hash * 16807) % 2147483647;
+  }
+  
+  return shuffled;
+}
+
 
 function getYouTubeId(url) {
   const match = url.match(/(?:youtu\.be\/|v=)([a-zA-Z0-9_-]{11})/)
