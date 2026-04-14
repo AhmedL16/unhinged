@@ -60,8 +60,9 @@ export async function getAllVideos() {
   const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL
   const supabaseKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY
 
+  // The fix is the "!inner" part below
   const res = await fetch(
-    `${supabaseUrl}/rest/v1/videos?select=*,creators(name,slug,approved)&creators.approved=eq.true&order=created_at.desc`,
+    `${supabaseUrl}/rest/v1/videos?select=*,creators!inner(name,slug,approved)&creators.approved=eq.true&order=created_at.desc`,
     {
       headers: {
         apikey: supabaseKey,
