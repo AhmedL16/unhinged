@@ -1,7 +1,7 @@
 export const revalidate = 0
 import { getAllVideos } from './lib/supabase'
 import Link from 'next/link'
-import Thumbnail from '../components/Thumbnail'
+import Thumbnail from './components/thumbnail'
 function dailyShuffle(array) {
   if (!array || array.length === 0) return [];
 
