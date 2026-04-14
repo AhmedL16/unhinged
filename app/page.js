@@ -60,7 +60,7 @@ export default async function Home() {
         {videos.map(video => {
           const id = getYouTubeId(video.youtube_url)
           if (!id) return null
-          const thumbnail = `https://img.youtube.com/vi/${id}/mqdefault.jpg`
+          const thumbnail = `https://img.youtube.com/vi/${id}/maxresdefault.jpg`
 
           return (
             <Link
