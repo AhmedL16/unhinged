@@ -1,3 +1,4 @@
+export const revalidate = 0
 import { getVideoById, getSimilarVideos } from '../../lib/supabase'
 import WatchPlayer from '../../components/WatchPlayer'
 import ViewTracker from '../../components/ViewTracker'

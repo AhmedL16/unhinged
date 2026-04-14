@@ -1,3 +1,4 @@
+export const revalidate = 0
 import { getCreatorBySlug } from '../../lib/supabase'
 import VideoPlayer from '../../components/VideoPlayer'
 import Link from 'next/link'

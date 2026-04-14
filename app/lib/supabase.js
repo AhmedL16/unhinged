@@ -8,7 +8,8 @@ export async function getCreatorBySlug(slug) {
       headers: {
         apikey: supabaseKey,
         Authorization: `Bearer ${supabaseKey}`
-      }
+      },
+      cache: 'no-store'
     }
   )
   const creators = await creatorRes.json()
@@ -21,7 +22,8 @@ export async function getCreatorBySlug(slug) {
       headers: {
         apikey: supabaseKey,
         Authorization: `Bearer ${supabaseKey}`
-      }
+      },
+      cache: 'no-store'
     }
   )
   const videos = await videosRes.json()
@@ -32,7 +34,8 @@ export async function getCreatorBySlug(slug) {
       headers: {
         apikey: supabaseKey,
         Authorization: `Bearer ${supabaseKey}`
-      }
+      },
+      cache: 'no-store'
     }
   )
   const creator_tags = await tagsRes.json()
@@ -49,7 +52,8 @@ export async function getAllCreators() {
       headers: {
         apikey: supabaseKey,
         Authorization: `Bearer ${supabaseKey}`
-      }
+      },
+      cache: 'no-store'
     }
   )
 
@@ -67,7 +71,8 @@ export async function getAllVideos() {
       headers: {
         apikey: supabaseKey,
         Authorization: `Bearer ${supabaseKey}`
-      }
+      },
+      cache: 'no-store'
     }
   )
 
@@ -84,7 +89,8 @@ export async function getVideoById(id) {
       headers: {
         apikey: supabaseKey,
         Authorization: `Bearer ${supabaseKey}`
-      }
+      },
+      cache: 'no-store'
     }
   )
 
@@ -104,6 +110,7 @@ export async function incrementViews(videoId) {
         Authorization: `Bearer ${supabaseKey}`,
         'Content-Type': 'application/json'
       },
+      cache: 'no-store',
       body: JSON.stringify({ video_id: videoId })
     }
   )
@@ -118,7 +125,8 @@ export async function getSimilarVideos(videoId, creatorId) {
       headers: {
         apikey: supabaseKey,
         Authorization: `Bearer ${supabaseKey}`
-      }
+      },
+      cache: 'no-store'
     }
   )
 
