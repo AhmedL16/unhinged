@@ -119,8 +119,8 @@ export async function getSimilarVideos(videoId, creatorId) {
   const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL
   const supabaseKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY
 
-  const res = await fetch(
-    `${supabaseUrl}/rest/v1/videos?id=neq.${videoId}&select=*,creators(name,slug)&order=views.desc&limit=6`,
+  const tagsRes = await fetch(
+    `${supabaseUrl}/rest/v1/creator_tags?creator_id=eq.${creatorId}&select=tag_id`,
     {
       headers: {
         apikey: supabaseKey,
@@ -129,7 +129,62 @@ export async function getSimilarVideos(videoId, creatorId) {
       cache: 'no-store'
     }
   )
+  const tagsData = await tagsRes.json()
+  const tagIds = Array.isArray(tagsData) ? tagsData.map(t => t.tag_id) : []
 
+  let similarVideos = []
+
+  if (tagIds.length > 0) {
+    const relatedCreatorsRes = await fetch(
+      `${supabaseUrl}/rest/v1/creator_tags?tag_id=in.(${tagIds.join(',')})&creator_id=neq.${creatorId}&select=creator_id`,
+      {
+        headers: {
+          apikey: supabaseKey,
+          Authorization: `Bearer ${supabaseKey}`
+        },
+        cache: 'no-store'
+      }
+    )
+    const relatedCreators = await relatedCreatorsRes.json()
+    const relatedIds = [...new Set(Array.isArray(relatedCreators) ? relatedCreators.map(r => r.creator_id) : [])]
+
+    if (relatedIds.length > 0) {
+      const tagVideosRes = await fetch(
+        `${supabaseUrl}/rest/v1/videos?creator_id=in.(${relatedIds.join(',')})&id=neq.${videoId}&select=*,creators(name,slug)&order=views.desc&limit=4`,
+        {
+          headers: {
+            apikey: supabaseKey,
+            Authorization: `Bearer ${supabaseKey}`
+          },
+          cache: 'no-store'
+        }
+      )
+      similarVideos = await tagVideosRes.json()
+      if (!Array.isArray(similarVideos)) similarVideos = []
+    }
+  }
+
+  if (similarVideos.length < 6) {
+    const fillRes = await fetch(
+      `${supabaseUrl}/rest/v1/videos?id=neq.${videoId}&select=*,creators(name,slug)&order=views.desc&limit=6`,
+      {
+        headers: {
+          apikey: supabaseKey,
+          Authorization: `Bearer ${supabaseKey}`
+        },
+        cache: 'no-store'
+      }
+    )
+    const fillVideos = await fillRes.json()
+    if (Array.isArray(fillVideos)) {
+      const existingIds = new Set(similarVideos.map(v => v.id))
+      const newVideos = fillVideos.filter(v => !existingIds.has(v.id))
+      similarVideos = [...similarVideos, ...newVideos].slice(0, 6)
+    }
+  }
+
+  return similarVideos
+}
   const data = await res.json()
   return Array.isArray(data) ? data : []
 }
