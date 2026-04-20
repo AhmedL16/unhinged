@@ -182,11 +182,9 @@ export async function getSimilarVideos(videoId, creatorId) {
       similarVideos = [...similarVideos, ...newVideos].slice(0, 6)
     }
   }
-
+  
   return similarVideos
-}
-  const data = await res.json()
-  return Array.isArray(data) ? data : []
+
 }
 export async function getYouTubeDuration(videoId) {
   const apiKey = process.env.NEXT_PUBLIC_YOUTUBE_API_KEY
